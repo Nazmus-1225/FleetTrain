@@ -22,6 +22,10 @@ export class NotebookComponent implements OnInit {
 
   ngOnInit() {
     const notebookId = this.route.snapshot.paramMap.get('id');
+    if (!notebookId) {
+      console.error('Notebook ID is missing from the route');
+      return;
+    }
     this.notebookService.getNotebook(notebookId).subscribe(notebook => {
       this.notebook = notebook;
       this.setupWebSocket();

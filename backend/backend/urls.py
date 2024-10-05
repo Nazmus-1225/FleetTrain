@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from jupyter_app.urls import router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/',router.urlpatterns)
 ]

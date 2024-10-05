@@ -4,7 +4,7 @@ import { NotebookComponent } from './components/notebook/notebook.component';
 
 
 const routes: Routes = [
-  {path: '', component: NotebookComponent }
+  {path: 'notebook/:id', component: NotebookComponent }
 ]
 
 @NgModule({
