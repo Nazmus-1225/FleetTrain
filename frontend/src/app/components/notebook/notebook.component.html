@@ -1,0 +1,40 @@
+<div class="notebook-container">
+    <div class="notebook-header">
+      <h1>{{notebook?.title}}</h1>
+      <div class="actions">
+        <button (click)="addCell('code')">Add Code Cell</button>
+        <button (click)="addCell('markdown')">Add Markdown Cell</button>
+      </div>
+    </div>
+  
+    <div class="cells-container">
+      <div *ngFor="let cell of notebook?.cells" class="cell">
+        <div class="cell-toolbar">
+          <span>{{cell.type}}</span>
+          <button *ngIf="cell.type === 'code'" (click)="executeCell(cell)">
+            Run
+          </button>
+        </div>
+  
+        <div *ngIf="cell.type === 'code'" class="code-cell">
+          <div #editorContainer class="editor-container"
+               (init)="initializeEditor(editorContainer, cell)"></div>
+          <div class="outputs">
+            <div *ngFor="let output of cell.outputs" class="output">
+              <pre *ngIf="output.type === 'stream'">{{output.text}}</pre>
+              <pre *ngIf="output.type === 'execute_result'">{{output.data['text/plain']}}</pre>
+              <div *ngIf="output.type === 'error'" class="error">
+                <pre>{{output.ename}}: {{output.evalue}}</pre>
+                <pre>{{output.traceback.join('\n')}}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngIf="cell.type === 'markdown'" class="markdown-cell">
+          <div [innerHTML]="renderMarkdown(cell.content)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
