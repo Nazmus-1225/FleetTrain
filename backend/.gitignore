@@ -3,3 +3,4 @@
 /jupyter_app/migrations/__pycache__
 /backend/__pycache__
 db.sqlite3
+*.pyc

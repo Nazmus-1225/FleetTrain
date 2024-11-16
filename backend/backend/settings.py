@@ -39,17 +39,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'corsheaders',
-    'jupyter_app'
-]
+    'accounts']
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer'
     }
 }
 
-
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
+]
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:4200',  # URL of the Angular frontend
 ]
 
 MIDDLEWARE = [
@@ -62,15 +65,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware'
 ]
+# settings.py
+
+# Django REST framework settings
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.permissions.AllowAny',
     ],
 }
+
 
 ROOT_URLCONF = 'backend.urls'
 
