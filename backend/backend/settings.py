@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'corsheaders',
-    'accounts']
+    'accounts',
+    'notebooks']
 
 CHANNEL_LAYERS = {
     'default': {
