@@ -1,18 +1,13 @@
-# accounts/models.py
-import bcrypt
 from django.db import models
+from django.contrib.auth.hashers import make_password
 
 class User(models.Model):
+    id = models.AutoField(primary_key=True)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
+    password = models.CharField(max_length=128)
+    role = models.CharField(max_length=50, choices=(('user', 'User'), ('admin', 'Admin')))
 
-    def set_password(self, raw_password):
-        hashed = bcrypt.hashpw(raw_password.encode('utf-8'), bcrypt.gensalt())
-        self.password = hashed.decode('utf-8')
-
-    def check_password(self, raw_password):
-        return bcrypt.checkpw(raw_password.encode('utf-8'), self.password.encode('utf-8'))
-
-    def __str__(self):
-        return self.email
+    def save(self, *args, **kwargs):
+        if not self.id:  # Hash password on creation
+            self.password = make_password(self.password)
+        super().save(*args, **kwargs)
