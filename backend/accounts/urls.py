@@ -1,9 +1,8 @@
-# accounts/urls.py
 from django.urls import path
-from . import views
+from .views import RegisterView, LoginView, JWTVerifyView
 
 urlpatterns = [
-    path('signup/', views.signup, name='signup'),
-    path('login/', views.login, name='login'),
-    path('verify-token/', views.VerifyTokenView.as_view(), name='verify_token'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('jwt-verify/', JWTVerifyView.as_view(), name='jwt-verify'),
 ]

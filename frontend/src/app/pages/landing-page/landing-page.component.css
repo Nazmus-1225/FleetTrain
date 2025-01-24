@@ -1,0 +1,77 @@
+/* General styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9fc; /* Off-white */
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #0056b3; /* Primary Blue */
+    font-size: 2.5rem;
+    margin-top: 30px;
+  }
+  
+  /* Centering content */
+  div {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Buttons */
+  button {
+    background-color: #0056b3; /* Primary Blue */
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    margin: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: #003f8a; /* Darker Blue */
+    transform: scale(1.05); /* Slight zoom effect */
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  /* Conditional text styles */
+  p {
+    font-size: 1.2rem;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  p.user {
+    color: #007bff; /* Lighter Blue for User */
+  }
+  
+  p.admin {
+    color: #003f8a; /* Darker Blue for Admin */
+  }
+  
+  /* Links */
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  /* Template layout */
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 50px;
+  }
+  

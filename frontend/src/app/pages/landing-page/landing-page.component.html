@@ -1,0 +1,13 @@
+<div>
+    <h1>Welcome to FleetTrain</h1>
+    <div *ngIf="!state; else dashboard">
+      <button routerLink="/register">Register</button>
+      <button routerLink="/login">Login</button>
+    </div>
+    <ng-template #dashboard>
+      <p *ngIf="role === 'user'">User Dashboard</p>
+      <p *ngIf="role === 'admin'">Admin Dashboard</p>
+      <button onclick="logout()">Logout</button>
+    </ng-template>
+  </div>
+  

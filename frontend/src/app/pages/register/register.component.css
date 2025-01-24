@@ -1,0 +1,17 @@
+form {
+    background-color: #f4faff; /* Light Blue */
+  }
+  
+  form h2 {
+    margin-bottom: 20px;
+    color: #003f8a;
+  }
+  
+  form input, form select {
+    background-color: #eef5fc; /* Off-white with Blue Tint */
+  }
+  
+  form button {
+    margin-top: 20px;
+  }
+  

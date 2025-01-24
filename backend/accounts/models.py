@@ -5,7 +5,7 @@ class User(models.Model):
     id = models.AutoField(primary_key=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
-    role = models.CharField(max_length=50, choices=(('user', 'User'), ('admin', 'Admin')))
+    role = models.CharField(max_length=50, choices=(('user', 'User'), ('admin', 'Admin')), default='user')
 
     def save(self, *args, **kwargs):
         if not self.id:  # Hash password on creation
