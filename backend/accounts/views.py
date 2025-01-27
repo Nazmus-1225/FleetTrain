@@ -6,7 +6,6 @@ from .models import User
 from .serializers import UserSerializer, LoginSerializer
 import jwt
 from django.conf import settings
-from datetime import datetime, timedelta
 
 class RegisterView(APIView):
     def post(self, request):
@@ -27,9 +26,7 @@ class LoginView(APIView):
                     payload = {
                         'id': user.id,
                         'email': user.email,
-                        'role': user.role,
-                        'exp': datetime.utcnow() + timedelta(hours=1),  # Token expiry (1 hour)
-                        'iat': datetime.utcnow()  # Issued at
+                        'role': user.role
                     }
                     token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
                     

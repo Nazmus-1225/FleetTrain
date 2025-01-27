@@ -2,10 +2,16 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from rest_framework.views import APIView
 import json
-import jupyterlab
 from jupyter_client import KernelManager
 import uuid
+from .models import Notebook
+from .serializers import NotebookSerializer
+import jwt
+from django.conf import settings
+from rest_framework.response import Response
+from rest_framework import status
 
 # Store kernel managers for each notebook
 notebook_kernels = {}
@@ -105,3 +111,33 @@ def cleanup_kernel(notebook_id):
             del notebook_kernels[notebook_id]
         except Exception as e:
             print(f"Error cleaning up kernel: {e}")
+
+
+class NotebookListView(APIView):
+    def get(self, request):
+        token = request.headers.get('Authorization', None)
+        try:
+            token = token.split(" ")[1]
+            decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            if decoded_token["role"]=="user":
+                notebooks = Notebook.objects.filter(user_id=decoded_token['id'])
+                serializer = NotebookSerializer(notebooks, many=True)
+                return Response(serializer.data,status=status.HTTP_200_OK)
+            return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
+        except jwt.InvalidTokenError:
+            return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+class NotebookDeleteView(APIView):
+    def delete(self, request, pk):
+        token = request.headers.get('Authorization', None)
+        try:
+            token = token.split(" ")[1]
+            decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            if decoded_token["role"]=="user":
+                notebook = Notebook.objects.get(id=pk)
+                if(notebook.user_id==decoded_token['id']):
+                    notebook.delete()
+                    return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
+        except jwt.InvalidTokenError:
+            return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)

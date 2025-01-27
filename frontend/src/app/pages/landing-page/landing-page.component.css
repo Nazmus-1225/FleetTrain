@@ -1,77 +1,164 @@
 /* General styles */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f9f9fc; /* Off-white */
-    margin: 0;
-    padding: 0;
-    color: #333;
-  }
-  
-  h1 {
-    text-align: center;
-    color: #0056b3; /* Primary Blue */
-    font-size: 2.5rem;
-    margin-top: 30px;
-  }
-  
-  /* Centering content */
-  div {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  /* Buttons */
-  button {
-    background-color: #0056b3; /* Primary Blue */
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    margin: 10px;
-    font-size: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  button:hover {
-    background-color: #003f8a; /* Darker Blue */
-    transform: scale(1.05); /* Slight zoom effect */
-  }
-  
-  button:focus {
-    outline: none;
-  }
-  
-  /* Conditional text styles */
-  p {
-    font-size: 1.2rem;
-    margin-top: 20px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  p.user {
-    color: #007bff; /* Lighter Blue for User */
-  }
-  
-  p.admin {
-    color: #003f8a; /* Darker Blue for Admin */
-  }
-  
-  /* Links */
-  a {
-    text-decoration: none;
-    color: #fff;
-  }
-  
-  /* Template layout */
-  .container {
-    max-width: 500px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    margin-top: 50px;
-  }
-  
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9fc; /* Off-white */
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #0056b3; /* Primary Blue */
+  font-size: 2.5rem;
+  margin-top: 30px;
+}
+
+/* Centering content */
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-top: 50px;
+  position: relative; /* Required for positioning elements inside */
+}
+
+/* Logout button styles */
+.logout-container {
+  position: absolute; /* Position relative to the container */
+  top: 10px;
+  right: 10px;
+}
+
+.logout-button {
+  background-color: #0056b3; /* Primary Blue */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logout-button:hover {
+  background-color: #003f8a; /* Darker Blue on hover */
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+.logout-button:focus {
+  outline: none;
+}
+
+/* Buttons */
+button {
+  background-color: #0056b3; /* Primary Blue */
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  margin: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #003f8a; /* Darker Blue */
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Delete and Create button styles */
+.delete-button {
+  background-color: #d9534f; /* Danger Red */
+}
+
+.delete-button:hover {
+  background-color: #c9302c;
+}
+
+.create-button {
+  background-color: #5cb85c; /* Success Green */
+}
+
+.create-button:hover {
+  background-color: #4cae4c;
+}
+
+/* List Styles */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+span {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h3 {
+  margin-bottom: 20px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-actions button[type="submit"] {
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-actions button[type="button"] {
+  background-color: #d9534f;
+  color: white;
+}
+
+.modal-actions button:hover {
+  opacity: 0.9;
+}
+

@@ -1,0 +1,76 @@
+/* General body styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9fc; /* Off-white background */
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Container for centering the form */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+  }
+  
+  /* Login form styles */
+  .login-form {
+    background-color: #ffffff; /* White background for the form */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 100%;
+    max-width: 400px; /* Form width */
+    text-align: center;
+  }
+  
+  .login-form h2 {
+    color: #0056b3; /* Primary blue */
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+  }
+  
+  /* Input field styles */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #eef5fc; /* Light blue tint */
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #0056b3; /* Blue border on focus */
+    box-shadow: 0 0 5px rgba(0, 86, 179, 0.3); /* Subtle shadow on focus */
+  }
+  
+  /* Button styles */
+  button {
+    width: 100%;
+    background-color: #0056b3; /* Primary blue */
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: #003f8a; /* Darker blue on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  

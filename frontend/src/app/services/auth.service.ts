@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environment/environment';
-import { of } from 'rxjs';
 import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -32,27 +30,23 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
-  verifyToken(callback: (isAuthenticated: boolean) => void) {
+  verifyToken(): Promise<boolean> {
     const token = this.getToken();
-
+    if (!token) {
+      return Promise.resolve(false);
+    }
+  
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    this.http.get<any>(this.verifyTokenUrl,{headers}).subscribe({next:(response: HttpResponse<any>)=>{
-
-      if(response.status==200){
-        const isAuthenticated = true;
-        callback(isAuthenticated);
-      }
-      else 
-        {const isAuthenticated = false;
-        callback(isAuthenticated);
-        }
-        
-    },
-    error: (e: any) => console.error(e)
-  })
-
-  
-  
+    return this.http.get<any>(this.verifyTokenUrl, { headers }).toPromise()
+      .then((response) => {
+        // If the request succeeds and status is 200
+        return true;
+      })
+      .catch((error) => {
+        console.error(error);
+        // If there's an error (e.g., token invalid or expired)
+        return false;
+      });
   }
   
   

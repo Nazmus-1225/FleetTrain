@@ -56,4 +56,26 @@ body {
   a:hover {
     text-decoration: underline;
   }
+  /* Container for the entire app */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f9f9fc; /* Off-white background */
+  }
+  
+  /* Logo container */
+  .logo-container {
+    position: absolute; /* Position the logo at the top-left corner */
+    top: 10px;
+    left: 10px;
+  }
+  
+  /* Logo styles */
+  .logo {
+    width: 150px; /* Set logo width */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensure the logo scales correctly */
+    border-radius: 5px; /* Optional: Add rounded corners */
+  }
   

@@ -5,9 +5,76 @@
       <button routerLink="/login">Login</button>
     </div>
     <ng-template #dashboard>
-      <p *ngIf="role === 'user'">User Dashboard</p>
-      <p *ngIf="role === 'admin'">Admin Dashboard</p>
-      <button onclick="logout()">Logout</button>
+        <div class="logout-container">
+            <button (click)="logout()" class="logout-button">Logout</button>
+        </div>
+        <h2 *ngIf="role === 'user'">User Dashboard</h2>
+        <h2 *ngIf="role === 'admin'">Admin Dashboard</h2>
+
+      <h3 *ngIf="role === 'admin'">Resources</h3>
+      <ul *ngIf="role === 'admin'">
+        <li *ngFor="let resource of resources">
+          <span>{{ resource.ip_address }} - Max Kernels: {{ resource.max_kernels }}, Used: {{ resource.used }}, Available: {{ resource.available }}</span>
+          <button (click)="deleteResource(resource.id)" class="delete-button">Delete</button>
+        </li>
+      </ul>
+      <button class="create-button" (click)="openCreateResourceModal()" *ngIf="role=='admin'">Create Resource</button>
+
+      <h3 *ngIf="role === 'admin'">Kernels</h3>
+      <ul *ngIf="role === 'admin'">
+        <li *ngFor="let kernel of kernels">
+          <span>{{ kernel.kernel_name }} (Resource ID: {{ kernel.resource_id }}, Notebook ID: {{ kernel.notebook_id }})</span>
+        </li>
+      </ul>
+
+      <h3 *ngIf="role === 'user'">Notebooks</h3>
+      <ul *ngIf="role === 'user'">
+        <li *ngFor="let notebook of notebooks">
+          <span>{{ notebook.name }} - Date: {{ notebook.create_date }}, Type: {{ notebook.type }}</span>
+          <button (click)="deleteNotebook(notebook.id)" class="delete-button">Delete</button>
+        </li>
+      </ul>
+      <label *ngIf="role=='user'">
+        <input
+          *ngIf="role=='user'"
+          type="radio"
+          name="types"
+          value="central"
+          [(ngModel)]="newNotebookType"
+        />
+        Central
+      </label>
+      <label *ngIf="role=='user'">
+        <input
+          *ngIf="role=='user'"
+          type="radio"
+          name="types"
+          value="distributed"
+          [(ngModel)]="newNotebookType"
+        />
+        Distributed
+      </label>
+      <button class="create-button" *ngIf="role=='user'">Create Notebook</button>
     </ng-template>
+
+    <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <h3>Create Resource</h3>
+      <form [formGroup]="createResourceForm" (ngSubmit)="createResource()" novalidate>
+        <label>
+          IP Address:
+          <input type="text" formControlName="ip_address" />
+        </label>
+        <label>
+          Max Kernels:
+          <input type="number" formControlName="max_kernels" />
+        </label>
+        <div class="modal-actions">
+          <button type="submit" [disabled]="createResourceForm.invalid">Create</button>
+          <button type="button" (click)="closeCreateResourceModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
   </div>
   

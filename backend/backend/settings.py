@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'channels',
     'corsheaders',
     'accounts',
-    'notebooks']
+    'notebooks',
+    'resources']
 
 CHANNEL_LAYERS = {
     'default': {
