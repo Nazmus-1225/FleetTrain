@@ -1,0 +1,51 @@
+<div class="notebook-container">
+    <header class="header">
+      <div class="header-left">
+        <h1>{{notebook.name}}</h1>
+      </div>
+      <div class="header-right">
+        <button mat-raised-button color="primary">Save</button>
+        <button mat-raised-button color="accent">Download</button>
+      </div>
+    </header>
+  
+    <aside class="file-system">
+      <h2>File System</h2>
+      <div *ngFor="let folder of fileSystem">
+        <div>
+          <span>{{ folder.name }}</span>
+          <button mat-icon-button (click)="downloadFile(folder)">
+            <mat-icon>download</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteFile(folder)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <div *ngFor="let file of folder.files" class="file-item">
+          <span>{{ file.name }}</span>
+          <button mat-icon-button (click)="downloadFile(file)">
+            <mat-icon>download</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteFile(file)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <button mat-raised-button color="primary" (click)="uploadFile()">Upload</button>
+    </aside>
+  
+    <main class="editor">
+      <div *ngFor="let cell of notebook.cells; let i = index" class="cell">
+        <textarea [(ngModel)]="cell.code" placeholder="Write your code here"></textarea>
+        <div class="cell-actions">
+          <button mat-raised-button color="primary" (click)="runCell(i)">Run</button>
+          <button mat-raised-button color="warn" (click)="stopCell(i)">Stop</button>
+          <button mat-icon-button color="warn" (click)="deleteCell(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <button mat-raised-button color="primary" (click)="addCell()">Add Cell</button>
+    </main>
+  </div>
+  

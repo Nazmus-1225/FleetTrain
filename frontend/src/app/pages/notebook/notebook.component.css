@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f8ff;
+  }
+  
+  .notebook-container {
+    display: grid;
+    grid-template-columns: 250px auto;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+  }
+  
+  .header {
+    grid-column: span 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #1976d2;
+    color: white;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .header-left h1 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  
+  .header-right button {
+    margin-left: 0.5rem;
+  }
+  
+  .logo {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .file-system {
+    padding: 1rem;
+    background-color: #e3f2fd;
+    overflow-y: auto;
+  }
+  
+  .file-item {
+    padding-left: 1rem;
+  }
+  
+  .editor {
+    padding: 1rem;
+    background-color: white;
+    overflow-y: auto;
+  }
+  
+  .cell {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    border: 1px solid #cfd8dc;
+    padding: 1rem;
+    border-radius: 4px;
+    background-color: #e3f2fd;
+  }
+  
+  .cell textarea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+    border: 1px solid #cfd8dc;
+    border-radius: 4px;
+    padding: 0.5rem;
+  }
+  
+  .cell-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    justify-content: flex-end;
+  }
+  
