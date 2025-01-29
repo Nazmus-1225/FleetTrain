@@ -12,7 +12,7 @@ from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
 from decouple import config
-from .utils import createNotebookFiles, allocateResources, deleteNotebookFiles
+from .utils import createNotebookFiles, allocateResources, deleteNotebookFiles, unallocateResources
 class NotebookCreateView(APIView):
     def post(self, request):
         token = request.headers.get('Authorization', None)
@@ -57,6 +57,11 @@ class NotebookOpenView(APIView):
             return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
         except jwt.InvalidTokenError:
             return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+class NotebookCloseView(APIView):
+    def delete(self, request, pk):
+        unallocateResources(pk)
+        return Response(status=status.HTTP_200_OK)
 
 
 

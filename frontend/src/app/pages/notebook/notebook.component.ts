@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotebookService } from '../../services/notebook.service';
 import { ActivatedRoute } from '@angular/router';
+import { TabCloseService } from '../../services/tab-close.service';
 @Component({
   selector: 'app-notebook',
   templateUrl: './notebook.component.html',
@@ -8,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NotebookComponent implements OnInit{
 
-  constructor(private notebookService:NotebookService, private route:ActivatedRoute){}
+  constructor(private notebookService:NotebookService, private route:ActivatedRoute, private tabCloseService:TabCloseService){}
 
   fileSystem = [
     {
@@ -41,6 +42,7 @@ export class NotebookComponent implements OnInit{
   ngOnInit(): void {
     const paramId = this.route.snapshot.paramMap.get('id');
     this.id = paramId ? parseInt(paramId, 10) : 0;
+    this.tabCloseService.setId(this.id);
     this.notebookService.openNotebook(this.id).subscribe({
       next: (response: any) => {
         console.log(response);

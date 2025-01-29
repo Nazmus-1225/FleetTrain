@@ -7,6 +7,7 @@ import random
 from decouple import config
 import os
 import json
+import requests
 
 def createNotebookFiles(id, num_of_nodes):
     notebook=Notebook.objects.get(id=id)
@@ -50,6 +51,7 @@ def allocateResources(id, num_of_nodes):
     else:
         n=num_of_nodes+1
     resources = Resource.objects.filter(available__gt=0)
+    print(resources)
     type='central'
     for j in range (0,n):
         if(j>0):
@@ -177,3 +179,40 @@ def deleteNotebookFiles(id, num_of_nodes):
         for i in range(0,num_of_nodes):
             notebook_path = os.path.join(directory, f"{notebook.name}_r{i}.ipynb")
             os.remove(notebook_path)
+
+def unallocateResources(id):
+    notebook=Notebook.objects.get(id=id)
+    kernels = Kernel.objects.filter(notebook=notebook)
+    print(kernels)
+    if kernels.exists():
+        for kernel in kernels:
+            try:
+                resource_id = kernel.resource.id
+                resource = Resource.objects.get(id=resource_id)
+                resource.available+=1
+                resource.used-=1
+                resource.save()
+                url=f"http://{resource.ip_address}:8888"
+                session = requests.Session()
+                response = session.get(url, headers={"Authorization": f"Token {resource.token}"})
+                response.raise_for_status()
+
+                xsrf_token = session.cookies.get('_xsrf')
+                print(xsrf_token)
+                HEADERS = {
+                    "Authorization": f"Token {resource.token}",
+                    "Content-Type": "application/json",
+                    "X-XSRFToken": xsrf_token,
+                    }
+                cookies = {
+                    "_xsrf": xsrf_token,  # Pass _xsrf token in the cookies
+                }
+                response = requests.delete(f"{url}/api/kernels/{kernel.kernel_name}/", headers=HEADERS, cookies=cookies)
+                response.raise_for_status()
+                
+                command=f"echo {resource.password} | sudo -S rm -rf -p {config('KERNEL_DIRECTORY')}/{kernel.id}"
+                execute_remote_command(resource.ip_address, resource.username, resource.password, command)
+                
+                kernel.delete()
+            except Exception as e:
+                print(f"Unexpected error while unallocating kernel {kernel.id}: {e}")
