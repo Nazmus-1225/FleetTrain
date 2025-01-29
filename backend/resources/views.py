@@ -30,6 +30,9 @@ class ResourceCreateView(APIView):
             if decoded_token["role"]=="admin":
                 ip_address = request.data.get('ip_address')
                 max_kernels = request.data.get('max_kernels')
+                res_token = request.data.get('token')
+                username = request.data.get('username')
+                password = request.data.get('password')
                 if not ip_address or not max_kernels:
                     return Response({"error": "ip_address and max_kernels are required fields."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -37,7 +40,10 @@ class ResourceCreateView(APIView):
                     ip_address=ip_address,
                     max_kernels=int(max_kernels),  # Ensure it's converted to an integer
                     used=0,                        # Default value for 'used'
-                    available=int(max_kernels)     # Initial available kernels
+                    available=int(max_kernels),
+                    token=res_token,
+                    username=username,
+                    password=password     # Initial available kernels
                 )
                 resource.save()
                 serializer = ResourceSerializer(resource)

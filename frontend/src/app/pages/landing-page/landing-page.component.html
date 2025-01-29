@@ -30,13 +30,14 @@
       <h3 *ngIf="role === 'user'">Notebooks</h3>
       <ul *ngIf="role === 'user'">
         <li *ngFor="let notebook of notebooks">
-          <span>{{ notebook.name }} - Date: {{ notebook.create_date }}, Type: {{ notebook.type }}</span>
+          <a href="/notebook/{{notebook.id}}">
+            {{ notebook.name }} </a>- Date: {{ notebook.create_date }}, Type: {{ notebook.type }},  Number of nodes: {{notebook.num_of_nodes}}
+          
           <button (click)="deleteNotebook(notebook.id)" class="delete-button">Delete</button>
         </li>
       </ul>
       <label *ngIf="role=='user'">
         <input
-          *ngIf="role=='user'"
           type="radio"
           name="types"
           value="central"
@@ -46,7 +47,6 @@
       </label>
       <label *ngIf="role=='user'">
         <input
-          *ngIf="role=='user'"
           type="radio"
           name="types"
           value="distributed"
@@ -54,7 +54,18 @@
         />
         Distributed
       </label>
-      <button class="create-button" *ngIf="role=='user'">Create Notebook</button>
+      <br>
+      <label *ngIf="role === 'user' && newNotebookType === 'distributed'">
+         Number of nodes:
+        <input
+          *ngIf="newNotebookType === 'distributed'"
+          type="text"
+          name="nodes"
+          [(ngModel)]="newNotebookNodes"
+        />
+      </label>
+      
+      <button class="create-button" *ngIf="role=='user'" (click)="createNotebook()">Create Notebook</button>
     </ng-template>
 
     <div class="modal" *ngIf="showModal">
@@ -68,6 +79,18 @@
         <label>
           Max Kernels:
           <input type="number" formControlName="max_kernels" />
+        </label>
+        <label>
+          Token:
+          <input type="text" formControlName="token" />
+        </label>
+        <label>
+          Username:
+          <input type="text" formControlName="username" />
+        </label>
+        <label>
+          Password:
+          <input type="text" formControlName="password" />
         </label>
         <div class="modal-actions">
           <button type="submit" [disabled]="createResourceForm.invalid">Create</button>

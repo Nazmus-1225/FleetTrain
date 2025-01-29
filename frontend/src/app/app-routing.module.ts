@@ -10,7 +10,7 @@ const routes: Routes = [
   {path: '', component: LandingPageComponent },
   {path: 'register', component: RegisterComponent },
   {path: 'login', component: LoginComponent },
-  {path: 'notebook', component: NotebookComponent }
+  {path: 'notebook/:id', component: NotebookComponent }
 
 ]
 

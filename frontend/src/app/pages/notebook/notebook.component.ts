@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { NotebookService } from '../../services/notebook.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-notebook',
   templateUrl: './notebook.component.html',
   styleUrl: './notebook.component.css'
 })
-export class NotebookComponent {
+export class NotebookComponent implements OnInit{
+
+  constructor(private notebookService:NotebookService, private route:ActivatedRoute){}
+
   fileSystem = [
     {
       name: 'Folder 1',
@@ -29,6 +33,22 @@ export class NotebookComponent {
       { code: '', output: '', expanded: false },
     ],
   };
+
+  notebookModel = {
+
+  }
+  id!: number;
+  ngOnInit(): void {
+    const paramId = this.route.snapshot.paramMap.get('id');
+    this.id = paramId ? parseInt(paramId, 10) : 0;
+    this.notebookService.openNotebook(this.id).subscribe({
+      next: (response: any) => {
+        console.log(response);
+      },
+      error: () => console.log()
+    });
+      
+  }
 
   downloadFile(file: any) {
     console.log('Downloading:', file);

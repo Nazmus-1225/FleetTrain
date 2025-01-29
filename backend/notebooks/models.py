@@ -6,16 +6,20 @@ class Notebook(models.Model):
     name = models.CharField(max_length=50,default='')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     create_date = models.DateTimeField(auto_now_add=True)
-    file_location = models.CharField(max_length=255)
     type = models.CharField(max_length=50)
+    num_of_nodes = models.IntegerField(default=1)
 
 class Dataset(models.Model):
     id = models.AutoField(primary_key=True)
     notebook = models.ForeignKey(Notebook, on_delete=models.CASCADE)
-    location = models.CharField(max_length=255)
+    location = models.CharField(max_length=500,default='')
 
 class Cell(models.Model):
     id = models.AutoField(primary_key=True)
     notebook = models.ForeignKey(Notebook, on_delete=models.CASCADE)
     type = models.CharField(max_length=50)
     contents = models.TextField()
+
+class NotebookLocations(models.Model):
+    notebook = models.ForeignKey(Notebook, on_delete=models.CASCADE)
+    location = models.CharField(max_length=500,default='')

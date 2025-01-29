@@ -23,4 +23,10 @@ export class UserService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getToken()}`);
     return this.http.delete(`${this.baseUrl}notebooks/delete/${id}/`,{ headers:headers })
   }
+
+  addNotebook(type : string, nodes:number): Observable<any> {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getToken()}`);
+      return this.http.post(`${this.baseUrl}notebooks/create/`,{"type":type,"nodes":nodes},{ headers:headers })
+    }
+  
 }

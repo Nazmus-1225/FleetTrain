@@ -4,6 +4,7 @@ import { AdminService } from '../../services/admin.service';
 import { OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
@@ -18,11 +19,15 @@ export class LandingPageComponent implements OnInit {
   notebooks: any[] = [];
   createResourceForm: FormGroup = new FormGroup({
     ip_address: new FormControl(''), // Default value as an empty string
-    max_kernels: new FormControl(0)  // Default value as 0
+    max_kernels: new FormControl(0),  // Default value as 0
+    token: new FormControl(''), 
+    username: new FormControl(''), 
+    password: new FormControl('')
   });
   newNotebookType: string = 'central';
+  newNotebookNodes: number = 1;
 
-  constructor(private authService: AuthService, private adminService: AdminService, private userService:UserService) {}
+  constructor(private authService: AuthService, private adminService: AdminService, private userService:UserService, private router:Router) {}
   async ngOnInit(){
     this.role = this.authService.getRole();
     this.state = await this.authService.verifyToken();
@@ -122,4 +127,15 @@ export class LandingPageComponent implements OnInit {
     });
   }
 
-}
+  createNotebook(): void {
+    this.userService.addNotebook(this.newNotebookType,this.newNotebookNodes).subscribe({
+      next: (data : any) => {
+        this.router.navigate(['/notebook', data['notebook_id']]);
+      },
+      error: (error) => {
+        console.error('Error creating resource:', error);
+        }
+      });}
+    
+  }
+

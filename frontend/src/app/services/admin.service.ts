@@ -25,12 +25,10 @@ export class AdminService {
   }
 
   addResource(createResourceForm : FormGroup): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getToken()}`);
-    return this.http.post(`${this.baseUrl}resources/create/`,createResourceForm.value,{ headers:headers })
+    return this.http.post(`${this.baseUrl}resources/create/`,createResourceForm.value,{ headers:this.headers });
   }
 
   deleteResource(id : number): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getToken()}`);
-    return this.http.delete(`${this.baseUrl}resources/delete/${id}/`,{ headers:headers })
+    return this.http.delete(`${this.baseUrl}resources/delete/${id}/`,{ headers:this.headers });
   }
 }
