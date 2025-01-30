@@ -114,7 +114,14 @@ export class NotebookComponent implements OnInit{
   }
 
   addCell() {
-    this.notebook.cells.push({ code: '', outputs: [], type: this.newCellType });
+    let outputs:string[] = [];
+
+    if (this.newCellType === 'distributed') {
+      outputs = new Array(this.notebookModel.num_of_nodes).fill('');}
+    else{
+      outputs=[''];
+    }
+    this.notebook.cells.push({ code: '', outputs: outputs, type: this.newCellType });
   }
 
   toggleOutput(cell: any) {

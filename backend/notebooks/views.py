@@ -173,7 +173,7 @@ class DownloadFilesView(APIView):
             final_path=f"{config('DOWNLOAD_DIRECTORY')}/{filename}"
             return FileResponse(open(final_path, 'rb'), as_attachment=True, filename=filename)
 
-
+import re
 class ExecuteCodeView(APIView):
     def post(self,request):
         data = json.loads(request.body.decode('utf-8'))
@@ -194,8 +194,14 @@ class ExecuteCodeView(APIView):
                 notebookLocation=NotebookLocations.objects.filter(notebook=notebook,location__endswith=f"{notebook.name}_r{i}.ipynb").first()
                 notebookLocations.append(notebookLocation)
                 kernels=Kernel.objects.filter(notebook=notebook,type='distributed')
+                pattern = r'(\w+)\.(train|fit)\('
+                matches = re.findall(pattern, code)
+                if(len(matches)>0):
+                    variables = [match[0] for match in matches]
+                    print(variables[0])
         outputs=[]
         for i,kernel in enumerate(kernels):
+            print(i)
             output=execute_code(kernel.id,code)
             outputs.append(output)
             written=[]
