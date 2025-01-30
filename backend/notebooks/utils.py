@@ -51,7 +51,7 @@ def allocateResources(id, num_of_nodes):
     else:
         n=num_of_nodes+1
     resources = Resource.objects.filter(available__gt=0)
-    print(resources)
+
     type='central'
     for j in range (0,n):
         if(j>0):
@@ -75,11 +75,12 @@ def allocateResources(id, num_of_nodes):
             type=type
         )
         kernel.save()
-        command=f"echo {resources[i].password} | sudo -S mkdir -p {config('KERNEL_DIRECTORY')}/{kernel.id}"
+        kernel_directory = f"/home/{resources[i].username}/fleettrain_files"
+        command=f"mkdir -p {kernel_directory}/{kernel.id}"
         execute_remote_command(resources[i].ip_address, resources[i].username, resources[i].password, command)
         code = f"""
             import os
-            os.chdir('{config('KERNEL_DIRECTORY')}/{kernel.id}')
+            os.chdir('{kernel_directory}/{kernel.id}')
             print('Current working directory:', os.getcwd())
         """
         execute_code(kernel.id,code)
@@ -183,7 +184,6 @@ def deleteNotebookFiles(id, num_of_nodes):
 def unallocateResources(id):
     notebook=Notebook.objects.get(id=id)
     kernels = Kernel.objects.filter(notebook=notebook)
-    print(kernels)
     if kernels.exists():
         for kernel in kernels:
             try:
@@ -192,27 +192,38 @@ def unallocateResources(id):
                 resource.available+=1
                 resource.used-=1
                 resource.save()
-                url=f"http://{resource.ip_address}:8888"
-                session = requests.Session()
-                response = session.get(url, headers={"Authorization": f"Token {resource.token}"})
-                response.raise_for_status()
-
-                xsrf_token = session.cookies.get('_xsrf')
-                print(xsrf_token)
-                HEADERS = {
-                    "Authorization": f"Token {resource.token}",
-                    "Content-Type": "application/json",
-                    "X-XSRFToken": xsrf_token,
-                    }
-                cookies = {
-                    "_xsrf": xsrf_token,  # Pass _xsrf token in the cookies
-                }
-                response = requests.delete(f"{url}/api/kernels/{kernel.kernel_name}/", headers=HEADERS, cookies=cookies)
-                response.raise_for_status()
-                
-                command=f"echo {resource.password} | sudo -S rm -rf -p {config('KERNEL_DIRECTORY')}/{kernel.id}"
+                kernel_directory = f"/home/{resource.username}/fleettrain_files"
+                command=f"rm -rf {kernel_directory}/{kernel.id}"
                 execute_remote_command(resource.ip_address, resource.username, resource.password, command)
                 
                 kernel.delete()
             except Exception as e:
                 print(f"Unexpected error while unallocating kernel {kernel.id}: {e}")
+
+from scp import SCPClient
+
+
+def save_to_remote_via_scp(file_path, remote_path, remote_host, username, password):
+
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(remote_host, username=username, password=password)
+
+    with SCPClient(ssh.get_transport()) as scp:
+        scp.put(file_path, remote_path)
+
+def fetch_from_remote_via_ftp(remote_path, remote_host, username, password, local_path):
+
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(remote_host, username=username, password=password)
+
+    sftp = ssh.open_sftp()
+
+    # Download the file
+    sftp.get(remote_path, local_path)
+    print(f"File downloaded successfully to {local_path}")
+
+    # Close connections
+    sftp.close()
+    ssh.close()

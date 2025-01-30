@@ -1,4 +1,4 @@
-from .models import Notebook, Cell, NotebookLocations
+from .models import Notebook, NotebookLocations
 from rest_framework import serializers
 class NotebookSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,7 +10,3 @@ class NotebookLocationsSerializer(serializers.ModelSerializer):
         model = NotebookLocations   
         fields = '__all__'
 
-class CellSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cell
-        fields = '__all__'

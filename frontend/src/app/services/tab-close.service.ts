@@ -9,6 +9,7 @@ export class TabCloseService implements OnDestroy {
   constructor(private http: HttpClient) {
     // Attach event listener for browser/tab close
     window.addEventListener('beforeunload', this.onTabClose.bind(this));
+    window.addEventListener('popstate', this.onBackButton.bind(this));
   }
 
   setId(id:number){
@@ -16,6 +17,13 @@ export class TabCloseService implements OnDestroy {
   }
 
   onTabClose(event: Event) {
+    const url = `${environment.apiUrl}notebooks/close/${this.id}/`;
+    this.http.delete(url, {}).subscribe({
+      next: () => console.log('Tab close notified'),
+      error: (err) => console.error('Error notifying tab close', err),
+    });
+  }
+  onBackButton(event: Event) {
     const url = `${environment.apiUrl}notebooks/close/${this.id}/`;
     this.http.delete(url, {}).subscribe({
       next: () => console.log('Tab close notified'),
